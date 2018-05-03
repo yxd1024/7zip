@@ -1,5 +1,6 @@
 @echo on
 
+cd CPP
 set ROOT=%cd%\7zip
 set VC_LTL_PATH=%CD%\..\VC-LTL
 set DisableAdvancedSupport=true
@@ -62,7 +63,8 @@ copy O\7za.exe %OUTDIR%\7za.exe
 
 xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Lang %OUTDIR%\Lang
 xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Formats32 %OUTDIR%\Formats
-::xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Codecs32 %OUTDIR%\Codecs
+xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Codecs32 %OUTDIR%\Codecs
+xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\EXTRA %OUTDIR%\
 
 %OUTDIR%\7z.exe a -m0=lzma -mx9 %OUTDIR%\..\7z-x32.7z %OUTDIR%\*
 copy /b %OUTDIR%\..\Install-x32.exe /b + %OUTDIR%\..\7z-x32.7z /b %OUTDIR%\..\7z-x32.exe
@@ -70,4 +72,4 @@ del %OUTDIR%\..\7z-x32.7z
 del %OUTDIR%\..\Install-x32.exe
 
 :ende
-cd %ROOT%\..
+cd %ROOT%\..\..
