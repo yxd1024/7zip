@@ -5,7 +5,7 @@ set VC_LTL_PATH=%CD%\..\VC-LTL
 set DisableAdvancedSupport=true
 set LTL_Mode=Light
 set VC_LTL_Helper_Load=
-set OUTDIR=%ROOT%\bin64
+set OUTDIR=%ROOT%\..\..\bin64
 mkdir %OUTDIR%
 
 set OPTS=CPU=AMD64 MY_STATIC_LINK=1
@@ -22,14 +22,6 @@ copy AMD64\7za.dll %OUTDIR%\7za.dll
 cd %ROOT%\Bundles\Format7zF
 nmake %OPTS%
 copy AMD64\7z.dll %OUTDIR%\7z.dll
-
-cd %ROOT%\Bundles\Format7zFO
-nmake %OPTS%
-copy AMD64\7z.dll %OUTDIR%\7zOrig.dll
-
-cd %ROOT%\Bundles\Format7zUSB
-nmake %OPTS%
-copy AMD64\7zu.dll %OUTDIR%\7zu-x64.dll
 
 cd %ROOT%\UI\FileManager
 nmake %OPTS%
@@ -49,7 +41,7 @@ copy AMD64\7z.sfx %OUTDIR%\7z.sfx
 
 cd %ROOT%\..\..\C\Util\7zipInstall
 nmake %OPTS%
-copy AMD64\7zipInstall.exe %OUTDIR%\Install-x64.exe
+copy AMD64\7zipInstall.exe %OUTDIR%\..\Install-x64.exe
 
 cd %ROOT%\..\..\C\Util\7zipUninstall
 nmake %OPTS%
@@ -69,8 +61,13 @@ nmake %OPTS%
 copy AMD64\7za.exe %OUTDIR%\7za.exe
 
 xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Lang %OUTDIR%\Lang
-::xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Formats64 %OUTDIR%\Formats64
-::xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Codecs64 %OUTDIR%\Codecs64
+xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Formats64 %OUTDIR%\Formats
+::xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Codecs64 %OUTDIR%\Codecs
+
+%OUTDIR%\7z.exe a -m0=lzma -mx9 %OUTDIR%\..\7z-x64.7z %OUTDIR%\*
+copy /b %OUTDIR%\..\Install-x64.exe /b + %OUTDIR%\..\7z-x64.7z /b %OUTDIR%\..\7z-x64.exe
+del %OUTDIR%\..\7z-x64.7z
+del %OUTDIR%\..\Install-x64.exe
 
 :ende
 cd %ROOT%\..

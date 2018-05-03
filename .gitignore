@@ -1,1 +1,3 @@
-CPP/7zip/bin*
+bin32
+bin64
+7z-*.exe

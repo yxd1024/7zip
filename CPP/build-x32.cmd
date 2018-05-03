@@ -5,7 +5,7 @@ set VC_LTL_PATH=%CD%\..\VC-LTL
 set DisableAdvancedSupport=true
 set LTL_Mode=Light
 set VC_LTL_Helper_Load=
-set OUTDIR=%ROOT%\bin32
+set OUTDIR=%ROOT%\..\..\bin32
 mkdir %OUTDIR%
 
 set OPTS=MY_STATIC_LINK=1
@@ -22,14 +22,6 @@ copy O\7za.dll %OUTDIR%\7za.dll
 cd %ROOT%\Bundles\Format7zF
 nmake %OPTS%
 copy O\7z.dll %OUTDIR%\7z.dll
-
-cd %ROOT%\Bundles\Format7zFO
-nmake %OPTS%
-copy O\7z.dll %OUTDIR%\7zOrig.dll
-
-cd %ROOT%\Bundles\Format7zUSB
-nmake %OPTS%
-copy O\7zu.dll %OUTDIR%\7zu-x32.dll
 
 cd %ROOT%\UI\FileManager
 nmake %OPTS%
@@ -49,7 +41,7 @@ copy O\7z.sfx %OUTDIR%\7z.sfx
 
 cd %ROOT%\..\..\C\Util\7zipInstall
 nmake %OPTS%
-copy O\7zipInstall.exe %OUTDIR%\Install-x32.exe
+copy O\7zipInstall.exe %OUTDIR%\..\Install-x32.exe
 
 cd %ROOT%\..\..\C\Util\7zipUninstall
 nmake %OPTS%
@@ -69,8 +61,13 @@ nmake %OPTS%
 copy O\7za.exe %OUTDIR%\7za.exe
 
 xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Lang %OUTDIR%\Lang
-::xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Formats32 %OUTDIR%\Formats32
-::xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Codecs32 %OUTDIR%\Codecs32
+xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Formats32 %OUTDIR%\Formats
+::xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Codecs32 %OUTDIR%\Codecs
+
+%OUTDIR%\7z.exe a -m0=lzma -mx9 %OUTDIR%\..\7z-x32.7z %OUTDIR%\*
+copy /b %OUTDIR%\..\Install-x32.exe /b + %OUTDIR%\..\7z-x32.7z /b %OUTDIR%\..\7z-x32.exe
+del %OUTDIR%\..\7z-x32.7z
+del %OUTDIR%\..\Install-x32.exe
 
 :ende
 cd %ROOT%\..
