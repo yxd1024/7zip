@@ -104,6 +104,10 @@ static const UInt32 g_Levels[] =
 enum EMethodID
 {
   kCopy,
+  kZSTD,
+  kBROTLI,
+  kLZ4,
+  kLZ5,
   kLZMA,
   kLZMA2,
   kPPMd,
@@ -116,6 +120,10 @@ enum EMethodID
 static LPCSTR const kMethodsNames[] =
 {
     "Copy"
+  , "zstd"
+  , "Brotli"
+  , "LZ4"
+  , "LZ5"
   , "LZMA"
   , "LZMA2"
   , "PPMd"
@@ -125,17 +133,43 @@ static LPCSTR const kMethodsNames[] =
   , "PPMd"
 };
 
+static const EMethodID g_ZstdMethods[] =
+{
+  kZSTD
+};
+
+static const EMethodID g_BrotliMethods[] =
+{
+  kBROTLI
+};
+
+static const EMethodID g_Lz4Methods[] =
+{
+  kLZ4
+};
+
+static const EMethodID g_Lz5Methods[] =
+{
+  kLZ5
+};
 static const EMethodID g_7zMethods[] =
 {
+  kZSTD,
+  kBROTLI,
+  kLZ4,
+  kLZ5,
   kLZMA2,
   kLZMA,
   kPPMd,
+  kDeflate,
+  kDeflate64,
   kBZip2
 };
 
 static const EMethodID g_7zSfxMethods[] =
 {
   kCopy,
+  kZSTD,
   kLZMA,
   kLZMA2,
   kPPMd
@@ -225,6 +259,30 @@ static const CFormatInfo g_Formats[] =
     (1 << 1) | (1 << 3) | (1 << 5) | (1 << 7) | (1 << 9),
     METHODS_PAIR(g_XzMethods),
     false, true, true, false, false, false
+  },
+  {
+	"zstd", /* 6 */
+    (1 << 0) | (1 << 1) | (1 << 5) | (1 << 11) | (1 << 17) | (1 << 22),
+    METHODS_PAIR(g_ZstdMethods),
+    false, false, true, false, false, false
+  },
+  {
+    "Brotli", /* 7 */
+    (1 << 0) | (1 << 1) | (1 << 3) | (1 << 6) | (1 << 9) | (1 << 11),
+    METHODS_PAIR(g_BrotliMethods),
+    false, false, true, false, false, false
+  },
+  {
+    "LZ4", /* 9 */
+    (1 << 0) | (1 << 1) | (1 << 3) | (1 << 6) | (1 << 9) | (1 << 12),
+    METHODS_PAIR(g_Lz4Methods),
+    false, false, true, false, false, false
+  },
+  {
+    "LZ5", /* 10 */
+    (1 << 0) | (1 << 1) | (1 << 3) | (1 << 7) | (1 << 11) | (1 << 15),
+    METHODS_PAIR(g_Lz5Methods),
+    false, false, true, false, false, false
   },
   {
     "Swfc",
@@ -1066,8 +1124,8 @@ void CCompressDialog::SetLevel()
         level = 9;
     }
   }
-  
-  for (unsigned i = 0; i <= 9; i++)
+
+  for (unsigned i = 0; i <= 17; i++)
   {
     if ((fi.LevelsMask & (1 << i)) != 0)
     {
@@ -1124,6 +1182,7 @@ void CCompressDialog::SetMethod(int keepMethodId)
       weUseSameMethod = true;
       continue;
     }
+	
     if ((defaultMethod.IsEqualTo_Ascii_NoCase(method) || m == 0) && !weUseSameMethod)
       m_Method.SetCurSel(itemIndex);
   }
@@ -1633,6 +1692,10 @@ void CCompressDialog::SetNumThreads()
   int methodID = GetMethodID();
   switch (methodID)
   {
+    case kZSTD: numAlgoThreadsMax = 128; break;
+    case kBROTLI: numAlgoThreadsMax = 128; break;
+    case kLZ4: numAlgoThreadsMax = 128; break;
+    case kLZ5: numAlgoThreadsMax = 128; break;
     case kLZMA: numAlgoThreadsMax = 2; break;
     case kLZMA2: numAlgoThreadsMax = 32; break;
     case kBZip2: numAlgoThreadsMax = 32; break;

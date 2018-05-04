@@ -40,6 +40,26 @@ cd %ROOT%\Bundles\SFXWin
 nmake %OPTS%
 copy O\7z.sfx %OUTDIR%\7z.sfx
 
+cd %ROOT%\Bundles\Codec_brotli
+nmake %OPTS%
+copy O\brotli.dll %OUTDIR%\brotli-x32.dll
+
+cd %ROOT%\Bundles\Codec_lizard
+nmake %OPTS%
+copy O\lizard.dll %OUTDIR%\lizard-x32.dll
+
+cd %ROOT%\Bundles\Codec_lz4
+nmake %OPTS%
+copy O\lz4.dll %OUTDIR%\lz4-x32.dll
+
+cd %ROOT%\Bundles\Codec_lz5
+nmake %OPTS%
+copy O\lz5.dll %OUTDIR%\lz5-x32.dll
+
+cd %ROOT%\Bundles\Codec_zstdF
+nmake %OPTS%
+copy O\zstd.dll %OUTDIR%\zstd-x32.dll
+
 cd %ROOT%\..\..\C\Util\7zipInstall
 nmake %OPTS%
 copy O\7zipInstall.exe %OUTDIR%\..\Install-x32.exe
@@ -63,7 +83,7 @@ copy O\7za.exe %OUTDIR%\7za.exe
 
 xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Lang %OUTDIR%\Lang
 xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Formats32 %OUTDIR%\Formats
-xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Codecs32 %OUTDIR%\Codecs
+::xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\Codecs32 %OUTDIR%\Codecs
 xcopy /S /G /H /R /Y /Q /I %ROOT%\..\..\EXTRA %OUTDIR%\
 
 %OUTDIR%\7z.exe a -m0=lzma -mx9 %OUTDIR%\..\7z-x32.7z %OUTDIR%\*

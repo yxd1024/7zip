@@ -150,4 +150,23 @@ C_OBJS = \
 !include "../../Crc.mak"
 !include "../../LzmaDec.mak"
 
+COMPRESS_OBJS = $(COMPRESS_OBJS) \
+  $O\ZstdDecoder.obj \
+  $O\ZstdRegister.obj \
+
+ZSTD_OBJS = \
+  $O\xxhash.obj \
+  $O\entropy_common.obj \
+  $O\fse_decompress.obj \
+  $O\huf_decompress.obj \
+  $O\zstd_common.obj \
+  $O\zstd_decompress.obj \
+  $O\error_private.obj \
+
+ZSTDMT_OBJS = \
+  $O\threading.obj \
+  $O\zstd-mt_common.obj \
+  $O\zstd-mt_decompress.obj \
+  $O\zstd-mt_threading.obj \
+
 !include "../../7zip.mak"
